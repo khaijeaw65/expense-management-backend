@@ -11,8 +11,6 @@ class App {
 
   private env = config.app.env;
 
-  private domain = config.app.domain;
-
   private appRouter = new AppRouter();
 
   constructor() {
@@ -28,9 +26,7 @@ class App {
   }
 
   setupCors() {
-    this.app.use(cors({
-      origin: this.domain,
-    }));
+    this.app.use(cors({ origin: ['http://localhost:3000'] }));
   }
 
   setupEndpoint() {

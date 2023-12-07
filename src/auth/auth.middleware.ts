@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import TokenManager from './token-manager';
 import UnauthorizedError from '../error/unauthorized';
+import { User } from '../user/user.model';
 
 export default class AuthMiddleware {
   tokenManager = new TokenManager();
@@ -20,7 +21,7 @@ export default class AuthMiddleware {
       throw new UnauthorizedError('token not found');
     }
 
-    const decoded = this.tokenManager.verifyToken(token) as object;
+    const decoded = this.tokenManager.verifyToken(token) as User;
 
     req.user = decoded;
     next();

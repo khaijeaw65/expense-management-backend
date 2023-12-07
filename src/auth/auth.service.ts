@@ -3,9 +3,12 @@ import UnauthorizedError from '../error/unauthorized';
 import TokenManager from './token-manager';
 import { NewUser, UserWithOutPassword } from '../user/user.model';
 import UserService from '../user/user.service';
+import FamilyService from '../family/family.service';
 
 export default class AuthService {
   private userService = new UserService();
+
+  private familyService = new FamilyService();
 
   private tokenManager = new TokenManager();
 
@@ -23,6 +26,10 @@ export default class AuthService {
     }
 
     const { password: existsPassword, ...userWithoutPassword } = user;
+
+    const useUser = { ...userWithoutPassword, families: [] };
+
+    useUser.families = await this.familyService.getUserFamily(useUser.id);
 
     const token = this.tokenManager.generateToken(userWithoutPassword);
 
